@@ -1,0 +1,317 @@
+basePath: /api/v1
+definitions:
+  model.User:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
+  serialize.Response:
+    properties:
+      data: {}
+      msg:
+        type: string
+      status:
+        type: integer
+    type: object
+  service.CreateTask:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+    type: object
+  service.ShowTasksByKey:
+    properties:
+      key:
+        type: string
+    type: object
+  service.UpdateTask:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample Server pets
+  title: Memorandum API
+  version: 1.16.1
+paths:
+  /task:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 创建任务
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":model.Task,"msg":"创建成功!"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: 参数输入错误
+          schema:
+            type: string
+        "500":
+          description: '{"status":500,"data":{},"Msg":"创建文件失败!"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 创建任务
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 任务更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateTask'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"更新成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: 参数输入错误
+          schema:
+            type: string
+        "500":
+          description: '{"status":500,"data":{},"Msg":"查无此事项"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 更新任务
+  /task/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 任务序号
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"事项删除成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: id参数输入有误
+          schema:
+            type: string
+        "500":
+          description: '{"status":500,"data":{},"Msg":"所删除事项不存在"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 删除任务
+  /tasks:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"删除成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "500":
+          description: '{"status":500,"data":{},"Msg":"无可删除事项"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 删除所有任务
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 搜索关键字
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/service.ShowTasksByKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":[]model.Task,"msg":"删除成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: '{"err":err}'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: '{"status":500,"data":{},"msg":"无"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 关键词查询
+  /tasks/:status:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 任务状态，0代表查看待办事项，1代表查看已完成事项
+        in: path
+        name: status
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"删除成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: status输入有误
+          schema:
+            type: string
+        "500":
+          description: '{"status":500,"data":{},"Msg":"无可删除事项"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 删除任务指定状态事项
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 访问令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 任务状态，0代表查看待办事项，1代表查看已完成事项,其余代表查看所有事项
+        in: path
+        name: status
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":Data:[]model.Task,"msg":"删除成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: status参数输入错误
+          schema:
+            type: string
+        "500":
+          description: '{"status":500,"data":{},"msg":"无"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 查询指定状态任务
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":serialize.TokenData,"msg":"登录成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: '{"status":400,"data":{},"Msg":"验证失败,发生错误"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "500":
+          description: '{"status":500,"data":{},"Msg":"查无此号"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 用户登录
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 新用户信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"注册成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "400":
+          description: '{"status":400,"data":{},"Msg":"输入不合规定"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+        "500":
+          description: '{"status":500,"data":{},"Msg":"注册成功"}'
+          schema:
+            $ref: '#/definitions/serialize.Response'
+      summary: 用户注册
+swagger: "2.0"
