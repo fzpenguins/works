@@ -173,17 +173,6 @@ func ShowTasksInStatus(c context.Context, ctx *app.RequestContext) {
 	ctx.JSON(200, res)
 }
 
-func ShowAllTasks(c context.Context, ctx *app.RequestContext) {
-	var st service.ShowAllTasks
-	claim, _ := service.ParseToken(string(ctx.GetHeader("Authorization")))
-	res := st.ShowAllTasks(claim.Id)
-	if res.Status != 200 {
-		ctx.JSON(500, res)
-		return
-	}
-	ctx.JSON(200, res)
-}
-
 // ShowTasksByKey  @Tags TASK
 // @Summary 关键词查询
 // @Produce json

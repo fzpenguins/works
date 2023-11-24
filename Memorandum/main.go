@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Memorandum/cache"
 	"Memorandum/config"
 	"Memorandum/routes"
 )
@@ -16,7 +17,7 @@ import (
 // @host localhost:8080
 func main() { // http://localhost:8080/swagger/index.html
 	config.Init()
-	//cache.Redis()
+	cache.Redis()
 	r := routes.NewRouter()
 	r.Spin()
 }

@@ -13,7 +13,6 @@ func Register(ctx *app.RequestContext) serialize.Response {
 	err := ctx.BindJSON(&user)
 	if err != nil {
 		return serialize.Response{
-			//		Error:  err,
 			Msg:    "输入不合规定",
 			Status: 400,
 		}
@@ -27,10 +26,10 @@ func Register(ctx *app.RequestContext) serialize.Response {
 			Status: 500,
 		}
 	} else {
-		//应该先对密码进行加密处理，然后再进行存储
+		//对密码进行加密处理，然后再进行存储
 		passWord, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		user.CreateUser(passWord) //进行加密处理
-		//myToken, _ := generateToken(user.Id, user.UserName, user.Password)
+
 		config.DB.Create(&user)
 		return serialize.Response{
 			Msg:    "注册成功!",
@@ -63,7 +62,7 @@ func Login(ctx *app.RequestContext) serialize.Response {
 			//验证成功了
 
 			myToken, _ := GenerateToken(userTemp.Id, userTemp.UserName, userTemp.Password)
-			//dataToken
+
 			return serialize.Response{
 				Msg:    "登录成功",
 				Status: 200,

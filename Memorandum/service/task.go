@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Memorandum/cache"
 	"Memorandum/config"
 	"Memorandum/model"
 	"Memorandum/serialize"
@@ -173,9 +174,9 @@ func (st *ShowTasksInStatus) ShowTasksInStatus(uid uint) serialize.Response {
 			Msg:    "无",
 		}
 	}
-	//for _, v := range tasks {
-	//	v.AddView()
-	//}
+	for _, v := range tasks {
+		cache.AddView(&v)
+	}
 	return serialize.Response{
 		Status: 200,
 		Msg:    "成功展示",
@@ -194,9 +195,9 @@ func (st *ShowAllTasks) ShowAllTasks(uid uint) serialize.Response {
 			Msg:    "无",
 		}
 	}
-	//for _, v := range tasks {
-	//	v.AddView()
-	//}
+	for _, v := range tasks {
+		cache.AddView(&v)
+	}
 	return serialize.Response{
 		Status: 200,
 		Msg:    "成功展示",
@@ -215,9 +216,9 @@ func (st *ShowTasksByKey) ShowTasksByKey(uid int) serialize.Response {
 			Msg:    "无",
 		}
 	}
-	//for _, v := range tasks {
-	//	v.AddView()
-	//}
+	for _, v := range tasks {
+		cache.AddView(&v)
+	}
 	return serialize.Response{
 		Status: 200,
 		Msg:    "成功展示",

@@ -11,8 +11,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 )
 
-//不能用gin
-
 func NewRouter() *server.Hertz {
 	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
 	store := cookie.NewStore([]byte("something-very-secret"))

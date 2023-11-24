@@ -4,18 +4,6 @@ import (
 	"Memorandum/model"
 )
 
-//type CreateTask struct {
-//	Title   string `json:"title"`
-//	Content string `json:"content"`
-//	Status  int    `json:"status"`
-//}
-//
-//type UpdateTask struct {
-//	Title string `json:"title"`
-//}
-//
-//func createTask(task CreateTask)
-
 func createTask(item model.Task) model.Task {
 	return model.Task{
 		Uid:       item.Uid,

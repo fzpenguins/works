@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"time"
 )
 
 var DB *gorm.DB
@@ -16,6 +17,10 @@ func InitDB(dsn string) {
 		log.Println("err = ", err)
 		return
 	}
+	sqlDB, _ := DB.DB()
+	sqlDB.SetMaxIdleConns(20)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetConnMaxLifetime(time.Second * 30)
 
 	DB.AutoMigrate(&model.User{})
 	DB.AutoMigrate(&model.Task{})
